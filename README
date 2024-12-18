@@ -1,0 +1,56 @@
+Geographic Data Visualization |
+______________________________|
+
+Tech:
+  1) Java (Spring)
+  2) React.js
+  3) PostgreSQL (PostGIS) Docker Compose
+
+Setup:
+  docker-compose.yml:
+    version: '3.8'
+    services:
+      postgis:
+        image: postgis/postgis:latest
+        container_name: postgis-container
+        environment:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: gisdb
+        ports:
+          - "5432:5432"
+        volumes:
+          - postgis-data:/var/lib/postgresql/data
+    volumes:
+      postgis-data:
+
+  PostGIS Commands:
+    Extension:
+      CREATE EXTENSION postgis;
+    Create Table:
+      CREATE TABLE city_boundaries (
+      	id SERIAL PRIMARY KEY,
+      	name VARCHAR(255),
+      	boundary GEOMETRY(POLYGON, 4326)
+      );
+    Insert Data:
+      INSERT INTO city_boundaries (name, boundary)
+      VALUES
+      ('Paris', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[2.2242, 48.8156], [2.4699, 48.8156], [2.4699, 48.9022], [2.2242, 48.9022], [2.2242, 48.8156]]]}'), 4326)),
+      ('Tokyo', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[139.6, 35.5], [139.9, 35.5], [139.9, 35.8], [139.6, 35.8], [139.6, 35.5]]]}'), 4326)),
+      ('Berlin', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[13.088, 52.338], [13.761, 52.338], [13.761, 52.675], [13.088, 52.675], [13.088, 52.338]]]}'), 4326)),
+      ('London', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[-0.510375, 51.286760], [0.334015, 51.286760], [0.334015, 51.691874], [-0.510375, 51.691874], [-0.510375, 51.286760]]]}'), 4326)),
+      ('Moscow', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[37.3035, 55.4251], [37.9000, 55.4251], [37.9000, 55.8290], [37.3035, 55.8290], [37.3035, 55.4251]]]}'), 4326)),
+      ('Rio de Janeiro', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[-43.7000, -22.0000], [-43.2000, -22.0000], [-43.2000, -23.0000], [-43.7000, -23.0000], [-43.7000, -22.0000]]]}'), 4326)),
+      ('Sydney', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[151.175, -34.118], [151.365, -34.118], [151.365, -33.847], [151.175, -33.847], [151.175, -34.118]]]}'), 4326)),
+      ('Washington, D.C.', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[-77.1190, 38.7910], [-76.9090, 38.7910], [-76.9090, 38.9950], [-77.1190, 38.9950], [-77.1190, 38.7910]]]}'), 4326)),
+      ('Ottawa', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[-75.7000, 45.3000], [-75.2000, 45.3000], [-75.2000, 45.5000], [-75.7000, 45.5000], [-75.7000, 45.3000]]]}'), 4326)),
+      ('Canberra', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[149.0300, -35.5000], [149.2500, -35.5000], [149.2500, -35.3000], [149.0300, -35.3000], [149.0300, -35.5000]]]}'), 4326)),
+      ('Brasília', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[-47.941, -15.828], [-47.577, -15.828], [-47.577, -15.572], [-47.941, -15.572], [-47.941, -15.828]]]}'), 4326)),
+      ('New Delhi', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[77.0625, 28.4355], [77.3900, 28.4355], [77.3900, 28.8835], [77.0625, 28.8835], [77.0625, 28.4355]]]}'), 4326)),
+      ('Beijing', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[116.318, 39.467], [116.702, 39.467], [116.702, 40.054], [116.318, 40.054], [116.318, 39.467]]]}'), 4326)),
+      ('Cairo', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[31.200, 29.850], [31.250, 29.850], [31.250, 30.100], [31.200, 30.100], [31.200, 29.850]]]}'), 4326)),
+      ('Lagos', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[3.3000, 6.4000], [3.5000, 6.4000], [3.5000, 6.7000], [3.3000, 6.7000], [3.3000, 6.4000]]]}'), 4326)),
+      ('Bangkok', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[100.3500, 13.5000], [100.7000, 13.5000], [100.7000, 13.8000], [100.3500, 13.8000], [100.3500, 13.5000]]]}'), 4326)),
+      ('Kuala Lumpur', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[101.5000, 3.0000], [101.8000, 3.0000], [101.8000, 3.2000], [101.5000, 3.2000], [101.5000, 3.0000]]]}'), 4326)),
+      ('Baku', ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[49.8000, 40.3000], [50.1000, 40.3000], [50.1000, 40.6000], [49.8000, 40.6000], [49.8000, 40.3000]]]}'), 4326));
