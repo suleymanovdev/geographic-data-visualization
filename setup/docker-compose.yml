@@ -3,15 +3,42 @@ version: '3.8'
 services:
   postgis:
     image: postgis/postgis:latest
-    container_name: postgis-container
+    container_name: db
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
       POSTGRES_DB: gisdb
     ports:
       - "5432:5432"
     volumes:
       - postgis-data:/var/lib/postgresql/data
+    restart: always
+
+  api:
+    build:
+      context: ../api
+      dockerfile: Dockerfile
+    container_name: api
+    depends_on:
+      - postgis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/gisdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8080:8080"
+    restart: always
+
+  web:
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+    container_name: web
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+    restart: always
 
 volumes:
   postgis-data:

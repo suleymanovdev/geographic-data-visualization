@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Program",
+            "request": "launch",
+            "mainClass": "com.example.api.Program",
+            "projectName": "api"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-DemoApplication<api>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
